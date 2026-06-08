@@ -95,14 +95,6 @@ button{padding:8px 12px}
 </form>
 </div>
 
-<div class="card">
-<h2>チェックリスト削除</h2>
-<form method="post" action="/delete_list">
-<input type="hidden" name="list_id" value="{{list_id}}">
-<input type="password" name="password" placeholder="管理者パスワード">
-<button>このリストを削除</button>
-</form>
-</div>
 
 </body>
 </html>
@@ -192,17 +184,6 @@ def delete_item():
     con.close()
     return redirect("/")
 
-@app.route("/delete_list", methods=["POST"])
-def delete_list():
-    if request.form["password"] != ADMIN_PASSWORD:
-        return "パスワードが違います"
-    list_id = request.form["list_id"]
-    con = db()
-    con.execute("DELETE FROM items WHERE list_id=?", (list_id,))
-    con.execute("DELETE FROM lists WHERE id=?", (list_id,))
-    con.commit()
-    con.close()
-    return redirect("/")
 
 if __name__ == "__main__":
     init_db()
